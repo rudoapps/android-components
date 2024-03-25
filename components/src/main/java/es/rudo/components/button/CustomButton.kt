@@ -1,4 +1,9 @@
 package es.rudo.components.button
 
-class CustomButton {
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+
+@Composable
+fun CustomButton() {
+    Text("Hi from components")
 }
