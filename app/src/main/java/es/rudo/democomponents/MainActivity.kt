@@ -3,24 +3,25 @@ package es.rudo.democomponents
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import es.rudo.components.button.ButtonHeight
 import es.rudo.components.button.ButtonState
 import es.rudo.components.button.ButtonStyles
 import es.rudo.components.button.CustomButton
+import es.rudo.components.button.IconType
 import es.rudo.democomponents.ui.theme.DarkBlue
 import es.rudo.democomponents.ui.theme.Pink
 import es.rudo.democomponents.ui.theme.White
@@ -42,15 +43,32 @@ fun testingButtons() {
     val mutableStateFlowTestButton2 =
         remember { mutableStateOf(ButtonState.Default) }
 
-    val standardStyleNoBorder =
+    val standardStyleNoBorderSmall =
         ButtonStyles(
             text = "Lorem",
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = White,
             backgroundColor = DarkBlue,
+            height = ButtonHeight.Small,
+        )
+    val standardStyleNoBorderMedium =
+        ButtonStyles(
+            text = "Lorem",
+            icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
+            iconColor = White,
+            backgroundColor = DarkBlue,
+            height = ButtonHeight.Medium
+        )
+    val standardStyleNoBorderLarge =
+        ButtonStyles(
+            text = "Lorem",
+            icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
+            iconColor = White,
+            backgroundColor = DarkBlue,
+            height = ButtonHeight.Large
         )
 
-    val standardStyleWithBorder =
+    val standardStyleWithBorderLeftIcon =
         ButtonStyles(
             text = "Lorem",
             textColor = DarkBlue,
@@ -58,6 +76,26 @@ fun testingButtons() {
             iconColor = DarkBlue,
             borderColor = DarkBlue,
             borderWidth = 2.dp
+        )
+    val standardStyleWithBorderRightIcon =
+        ButtonStyles(
+            text = "Lorem",
+            textColor = DarkBlue,
+            icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
+            iconColor = DarkBlue,
+            borderColor = DarkBlue,
+            borderWidth = 2.dp,
+            iconType = IconType.Right
+        )
+    val standardStyleWithBorderTwoIcons =
+        ButtonStyles(
+            text = "Lorem",
+            textColor = DarkBlue,
+            icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
+            iconColor = DarkBlue,
+            borderColor = DarkBlue,
+            borderWidth = 2.dp,
+            iconType = IconType.TwoSides
         )
 
     val standardStyleNoBorderNoBackground =
@@ -71,14 +109,24 @@ fun testingButtons() {
         ButtonStyles(
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = White,
-            backgroundColor = DarkBlue
+            backgroundColor = DarkBlue,
+            height = ButtonHeight.Custom,
+            customHeight = 50.dp
         )
 
     Column {
 
         CustomButton(
             onClick = {},
-            buttonStyles = standardStyleNoBorder,
+            buttonStyles = standardStyleNoBorderSmall,
+            buttonState = mutableStateFlowTestButton1
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        
+        CustomButton(
+            onClick = {},
+            buttonStyles = standardStyleNoBorderMedium,
             buttonState = mutableStateFlowTestButton1
         )
 
@@ -86,7 +134,29 @@ fun testingButtons() {
 
         CustomButton(
             onClick = {},
-            buttonStyles = standardStyleWithBorder,
+            buttonStyles = standardStyleNoBorderLarge,
+            buttonState = mutableStateFlowTestButton1
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        CustomButton(
+            onClick = {},
+            buttonStyles = standardStyleWithBorderLeftIcon,
+            buttonState = mutableStateFlowTestButton1
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        CustomButton(
+            onClick = {},
+            buttonStyles = standardStyleWithBorderRightIcon,
+            buttonState = mutableStateFlowTestButton1
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        CustomButton(
+            onClick = {},
+            buttonStyles = standardStyleWithBorderTwoIcons,
             buttonState = mutableStateFlowTestButton1
         )
 
@@ -101,19 +171,24 @@ fun testingButtons() {
         Spacer(modifier = Modifier.height(10.dp))
 
         Box (
-            modifier = Modifier.width(50.dp).border(width = 2.dp, color = Color.Yellow)
+            modifier = Modifier.width(50.dp)
         ){
             CustomButton(
                 onClick = {},
                 buttonStyles = standardStyleOnlyIcon,
-                buttonState = mutableStateFlowTestButton1
+                buttonState = mutableStateFlowTestButton1,
             )
         }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
         CustomButton(
             onClick = {},
             buttonStyles = standardStyleOnlyIcon,
             buttonState = mutableStateFlowTestButton1
         )
+
+
 
 
     }
