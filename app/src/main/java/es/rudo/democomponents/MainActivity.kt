@@ -8,15 +8,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import es.rudo.components.button.ButtonConfiguration
 import es.rudo.components.button.ButtonHeight
 import es.rudo.components.button.ButtonState
 import es.rudo.components.button.ButtonStyles
@@ -43,17 +45,24 @@ fun testingButtons() {
     val mutableStateFlowTestButton2 =
         remember { mutableStateOf(ButtonState.Default) }
 
+
     val standardStyleNoBorderSmall =
         ButtonStyles(
-            text = "Lorem",
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = White,
             backgroundColor = DarkBlue,
             height = ButtonHeight.Small,
         )
+    val standardStyleNoBorderSmallIsLoading =
+        ButtonStyles(
+            icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
+            iconColor = White,
+            backgroundColor = Color.Red,
+            height = ButtonHeight.Small,
+            circularProgressIndicatorColor = Color.Blue
+        )
     val standardStyleNoBorderMedium =
         ButtonStyles(
-            text = "Lorem",
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = White,
             backgroundColor = DarkBlue,
@@ -61,7 +70,14 @@ fun testingButtons() {
         )
     val standardStyleNoBorderLarge =
         ButtonStyles(
-            text = "Lorem",
+            icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
+            iconColor = White,
+            backgroundColor = DarkBlue,
+            height = ButtonHeight.Large
+        )
+
+    val standardStyleNoBorderLargeTest =
+        ButtonStyles(
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = White,
             backgroundColor = DarkBlue,
@@ -70,7 +86,6 @@ fun testingButtons() {
 
     val standardStyleWithBorderLeftIcon =
         ButtonStyles(
-            text = "Lorem",
             textColor = DarkBlue,
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = DarkBlue,
@@ -79,7 +94,6 @@ fun testingButtons() {
         )
     val standardStyleWithBorderRightIcon =
         ButtonStyles(
-            text = "Lorem",
             textColor = DarkBlue,
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = DarkBlue,
@@ -89,7 +103,6 @@ fun testingButtons() {
         )
     val standardStyleWithBorderTwoIcons =
         ButtonStyles(
-            text = "Lorem",
             textColor = DarkBlue,
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = DarkBlue,
@@ -100,7 +113,6 @@ fun testingButtons() {
 
     val standardStyleNoBorderNoBackground =
         ButtonStyles(
-            text = "Lorem",
             textColor = Pink,
             icon = painterResource(id = es.rudo.components.R.drawable.ic_test_image),
             iconColor = Pink,
@@ -115,68 +127,100 @@ fun testingButtons() {
         )
 
     Column {
-
+        Button(
+            onClick = { mutableStateFlowTestButton2.value = ButtonState.Loading },
+        ) {
+            Text(text = "setLoading")
+        }
+        Button(
+            onClick = { mutableStateFlowTestButton2.value = ButtonState.Default },
+        ) {
+            Text(text = "setDefault")
+        }
         CustomButton(
+            text = "Lorem",
             onClick = {},
-            buttonStyles = standardStyleNoBorderSmall,
-            buttonState = mutableStateFlowTestButton1
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-        
-        CustomButton(
-            onClick = {},
-            buttonStyles = standardStyleNoBorderMedium,
-            buttonState = mutableStateFlowTestButton1
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        CustomButton(
-            onClick = {},
-            buttonStyles = standardStyleNoBorderLarge,
-            buttonState = mutableStateFlowTestButton1
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-
-        CustomButton(
-            onClick = {},
-            buttonStyles = standardStyleWithBorderLeftIcon,
-            buttonState = mutableStateFlowTestButton1
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-
-        CustomButton(
-            onClick = {},
-            buttonStyles = standardStyleWithBorderRightIcon,
-            buttonState = mutableStateFlowTestButton1
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton2,
+                mutableListOf(standardStyleNoBorderSmall,standardStyleNoBorderSmallIsLoading,standardStyleNoBorderSmallIsLoading)
+            ),
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         CustomButton(
+            text = "Lorem",
             onClick = {},
-            buttonStyles = standardStyleWithBorderTwoIcons,
-            buttonState = mutableStateFlowTestButton1
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleNoBorderMedium)
+            ),
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         CustomButton(
+            text = "Lorem",
             onClick = {},
-            buttonStyles = standardStyleNoBorderNoBackground,
-            buttonState = mutableStateFlowTestButton1
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleNoBorderLarge)
+            ),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        CustomButton(
+            text = "Lorem",
+            onClick = {},
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleWithBorderLeftIcon)
+            ),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        CustomButton(
+            text = "Lorem",
+            onClick = {},
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleWithBorderRightIcon)
+            ),
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Box (
+        CustomButton(
+            text = "Lorem",
+            onClick = {},
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleWithBorderTwoIcons)
+            )
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        CustomButton(
+            text = "Lorem",
+            onClick = {},
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleNoBorderNoBackground)
+            )
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Box(
             modifier = Modifier.width(50.dp)
-        ){
+        ) {
             CustomButton(
                 onClick = {},
-                buttonStyles = standardStyleOnlyIcon,
-                buttonState = mutableStateFlowTestButton1,
+                buttonConfiguration = ButtonConfiguration(
+                    mutableStateFlowTestButton1,
+                    mutableListOf(standardStyleOnlyIcon)
+                )
             )
         }
 
@@ -184,11 +228,11 @@ fun testingButtons() {
 
         CustomButton(
             onClick = {},
-            buttonStyles = standardStyleOnlyIcon,
-            buttonState = mutableStateFlowTestButton1
+            buttonConfiguration = ButtonConfiguration(
+                mutableStateFlowTestButton1,
+                mutableListOf(standardStyleOnlyIcon)
+            )
         )
-
-
 
 
     }
