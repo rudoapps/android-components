@@ -22,13 +22,22 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import es.rudo.components.dimens.Dimens
 
-
+/**
+ * Composable function to render a button with customizable styles and behavior.
+ *
+ * @param text The text to display on the button. Default is `null`.
+ * @param onClick The callback to be invoked when the button is clicked.
+ * @param buttonStyles The styles to apply to the button, such as colors, sizes, and padding.
+ * @param state The mutable state representing the current state of the button.
+ */
 @Composable
 fun ButtonComponent(
-    text: String? = null,
+    text: String? = "Lorem",
     onClick: () -> Unit,
     buttonStyles: ButtonStyles = ButtonStyles(),
     state: MutableState<ButtonState>
@@ -47,23 +56,19 @@ fun ButtonComponent(
                 }
             ),
         border = BorderStroke(
-            width = buttonStyles.onClickBorderWidth,
-            color = buttonStyles.onClickBorderColor
-        )  //This border is for buttons that already have a default border and is activated by pressing on the border
+            width = buttonStyles.onPressBorderWidth,
+            color = buttonStyles.onPressBorderColor
+        )
     ) {
         Button(
             onClick = {
-                state.value = ButtonState.Pressed
                 onClick()
             },
             shape = RoundedCornerShape(buttonStyles.roundedCornerShape),
             colors = ButtonDefaults.buttonColors(
                 containerColor = buttonStyles.backgroundColor,
                 contentColor = buttonStyles.textColor,
-                disabledContainerColor = buttonStyles.backgroundColor.copy(0.5F),
-                disabledContentColor = buttonStyles.textColor
             ),
-            enabled = true,
             border = BorderStroke(
                 width = buttonStyles.borderWidth,
                 color = buttonStyles.borderColor
@@ -73,7 +78,12 @@ fun ButtonComponent(
                 top = buttonStyles.paddingTop,
                 end = buttonStyles.paddingEnd,
                 bottom = buttonStyles.paddingBottom,
-            )
+            ),
+            modifier = if (buttonStyles.borderColor != Color.Transparent) {
+                Modifier.padding(buttonStyles.onPressBorderWidth)
+            } else {
+                Modifier.padding()
+            }
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -111,7 +121,7 @@ fun ButtonComponent(
                         Text(
                             text = text,
                             style = TextStyle(fontSize = buttonStyles.textSize),
-                            modifier = Modifier.padding(8.dp),
+                            modifier = Modifier.padding(buttonStyles.paddingBetweenIconAndText),
                             fontFamily = buttonStyles.fontFamily
                         )
                     }
@@ -132,11 +142,8 @@ fun ButtonComponent(
                             )
                         }
                     }
-
                 }
             }
         }
     }
-
-
 }

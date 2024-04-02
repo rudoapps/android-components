@@ -2,7 +2,6 @@ package es.rudo.components.button
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontFamily
@@ -10,63 +9,62 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import es.rudo.components.dimens.Dimens
 
-data class ButtonConfiguration (
-    val state : MutableState<ButtonState>,
-    val configuration: MutableList<ButtonStyles>
-    //This array of styles, will be ordered by the following logic;
-    // Position 0 -> Style default
-    // Position 1 -> Style pressed
-    // Position 2 -> Style loading
-    // Position 3 -> Style disabled
-    //If only one style is passed it is assumed by default to be the default type
-)
-
+/**
+ * A customizable button component.
+ *
+ * @param textColor The color of the text displayed on the button. Default is [Color.White].
+ * @param textSize The size of the text displayed on the button. Default is [Dimens.text_medium].
+ * @param height The height of the button.It can be of different types Small, Medium, Large and Custom, Default is [ButtonHeight.Medium].
+ * @param customHeight In case of a custom height, it is required to pass on the size. Default is [Dimens.size_none].
+ * @param backgroundColor The background color of the button. Default is [Color.Transparent].
+ * @param borderColor The color of the border around the button. Default is [Color.Transparent].
+ * @param borderWidth The width of the border around the button. Default is [Dimens.size_none].
+ * @param fontFamily The font family used for the text on the button. Default is [FontFamily.Default].
+ * @param icon The icon displayed on the button. Default is `null`.
+ * @param iconType The type of the icon. It can be of different types Left, Right and Two Sides, Default Default is `null`.
+ * @param paddingBetweenIconAndText The padding between the icon and the text on the button. Default is [Dimens.paddingSmall].
+ * @param iconColor The color of the icon on the button. Default is [Color.Transparent].
+ * @param circularProgressIndicatorSize The size of the circular progress indicator. Default is [Dimens.paddingLarge].
+ * @param circularProgressIndicatorColor The color of the circular progress indicator. Default is [Color.White].
+ * @param onPressBorderWidth The width of the border around the button when pressed. Default is [Dimens.size_none].
+ * @param onPressBorderColor The color of the border around the button when pressed. Default is [Color.Transparent].
+ * @param roundedCornerShape The size of the rounded corners of the button. Default is [Dimens.rounded_corner].
+ * @param paddingStart The start padding of the button. Default is [Dimens.size_none].
+ * @param paddingTop The top padding of the button. Default is [Dimens.paddingMini].
+ * @param paddingEnd The end padding of the button. Default is [Dimens.size_none].
+ * @param paddingBottom The bottom padding of the button. Default is [Dimens.paddingMini].
+ */
 data class ButtonStyles(
     val textColor: Color = Color.White,
-    //TODO documentation
     val textSize: TextUnit = Dimens.text_medium,
-    //TODO documentation
     val height: ButtonHeight = ButtonHeight.Medium,
-    //TODO documentation
     val customHeight: Dp = Dimens.size_none,
-    //TODO documentation
     val backgroundColor: Color = Color.Transparent,
-    //TODO documentation
     val borderColor: Color = Color.Transparent,
-    //TODO documentation
-    val fontFamily: FontFamily = FontFamily.Default,
-    //TODO documentation
-    //TODO implementation
-    val icon: Painter? = null,
-    //TODO documentation
-    val iconType: IconType? = null,
-    //TODO documentation
-    val paddingBetweenIconAndText: Dp = Dimens.paddingSmall,
-    //TODO documentation
-    val iconColor: Color = Color.Transparent,
-    //TODO documentation
-    val circularProgressIndicatorSize: Dp = Dimens.paddingLarge,
-    //TODO documentation
     val borderWidth: Dp = Dimens.size_none,
-    //TODO documentation
+    val fontFamily: FontFamily = FontFamily.Default,
+    val icon: Painter? = null,
+    val iconType: IconType? = null,
+    val paddingBetweenIconAndText: Dp = Dimens.paddingSmall,
+    val iconColor: Color = Color.Transparent,
+    val circularProgressIndicatorSize: Dp = Dimens.paddingLarge,
     val circularProgressIndicatorColor: Color = Color.White,
-    //TODO documentation
-    val onClickBorderWidth: Dp = Dimens.size_none,
-    //TODO documentation
-    val onClickBorderColor: Color = Color.Transparent,
-    //TODO documentation
+    val onPressBorderWidth: Dp = Dimens.size_none,
+    val onPressBorderColor: Color = Color.Transparent,
     val roundedCornerShape: Dp = Dimens.rounded_corner,
-    //TODO documentation
     val paddingStart: Dp = Dimens.size_none,
-    //TODO documentation
     val paddingTop: Dp = Dimens.paddingMini,
-    //TODO documentation
     val paddingEnd: Dp = Dimens.size_none,
-    //TODO documentation
     val paddingBottom: Dp = Dimens.paddingMini,
-    //TODO documentation
-)
 
+    )
+/**
+ * Enumeration representing different heights for a button.
+ * - [Small]: Represents a small-sized button.
+ * - [Medium]: Represents a medium-sized button.
+ * - [Large]: Represents a large-sized button.
+ * - [Custom]: Represents a button with a custom height.
+ */
 enum class ButtonHeight {
     Small,
     Medium,
@@ -74,6 +72,12 @@ enum class ButtonHeight {
     Custom,
 }
 
+/**
+ * Enumeration representing different types of icons on a button.
+ * - [Left]: Represents an icon positioned to the left of the button text.
+ * - [Right]: Represents an icon positioned to the right of the button text.
+ * - [TwoSides]: Represents icons positioned on both sides of the button text.
+ */
 enum class IconType {
     Left,
     Right,
@@ -83,13 +87,17 @@ enum class IconType {
 
 @Composable
         /**
-         * TODO documentation
-         * @param onClick
+         * A composable function to render a custom button with specified configurations.
+         *
+         * @param text The text to display on the button. Default is `null`.
+         * @param onClick The callback to be invoked when the button is clicked.
          */
 fun CustomButton(
-    text: String? = null,
+    text: String? = "Lorem",
     onClick: () -> Unit,
-    buttonConfiguration: ButtonConfiguration
+    buttonStyles: ButtonStyles = ButtonStyles(backgroundColor = Color.Blue, textColor = Color.White ),
+    isLoading: Boolean = false,
+    isDisabled: Boolean = false,
 ) {
-    ButtonRenderByState(text,onClick, buttonConfiguration)
+    ButtonRenderByState(text, onClick,buttonStyles,isLoading,isDisabled)
 }
