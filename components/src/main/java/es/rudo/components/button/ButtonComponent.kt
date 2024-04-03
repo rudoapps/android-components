@@ -22,10 +22,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import es.rudo.components.dimens.Dimens
 
 /**
  * Composable function to render a button with customizable styles and behavior.
@@ -40,7 +38,7 @@ fun ButtonComponent(
     text: String? = "Lorem",
     onClick: () -> Unit,
     buttonStyles: ButtonStyles = ButtonStyles(),
-    state: MutableState<ButtonState>
+    state: ButtonState
 ) {
     Card(
         shape = RoundedCornerShape(buttonStyles.roundedCornerShape),
@@ -68,7 +66,10 @@ fun ButtonComponent(
             colors = ButtonDefaults.buttonColors(
                 containerColor = buttonStyles.backgroundColor,
                 contentColor = buttonStyles.textColor,
+                disabledContainerColor = buttonStyles.backgroundColor.copy(0.5F),
+                disabledContentColor = buttonStyles.textColor
             ),
+            enabled = state != ButtonState.Disabled,
             border = BorderStroke(
                 width = buttonStyles.borderWidth,
                 color = buttonStyles.borderColor
@@ -90,7 +91,7 @@ fun ButtonComponent(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (state.value == ButtonState.Loading) {
+                if (state == ButtonState.Loading) {
                     CircularProgressIndicator(
                         color = buttonStyles.circularProgressIndicatorColor,
                         modifier = Modifier.size(buttonStyles.circularProgressIndicatorSize)
@@ -117,14 +118,16 @@ fun ButtonComponent(
                             )
                         }
                     }
-                    if (text?.isNotEmpty() == true) {
-                        Text(
-                            text = text,
-                            style = TextStyle(fontSize = buttonStyles.textSize),
-                            modifier = Modifier.padding(buttonStyles.paddingBetweenIconAndText),
-                            fontFamily = buttonStyles.fontFamily
-                        )
-                    }
+
+                        if (text?.isNotEmpty() == true) {
+                            Text(
+                                text = text,
+                                style = TextStyle(fontSize = buttonStyles.textSize),
+                                modifier = Modifier.padding(buttonStyles.paddingBetweenIconAndText),
+                                fontFamily = buttonStyles.fontFamily
+                            )
+                        }
+
                     if (buttonStyles.icon != null && (buttonStyles.iconType == IconType.Right || buttonStyles.iconType == IconType.TwoSides)) {
                         if (text?.isNotEmpty() == true) {
                             Icon(

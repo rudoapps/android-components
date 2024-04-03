@@ -1,9 +1,12 @@
 package es.rudo.components.button
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import es.rudo.components.button.ButtonState.Default
 import es.rudo.components.button.ButtonState.Disabled
@@ -44,42 +47,25 @@ fun ButtonRenderByState(
     //TODO: manejar state con MutableState local
     //TODO: la configuración que le pasas al botón tiene que ser del tipo del STATE en el que se encuentra. Si no encuentras el tipo se asigna el default
 
-    val state: MutableState<ButtonState> = remember { mutableStateOf(Default) }
+    var state by remember { mutableStateOf(Default) }
 
-
-    if (isLoading) {
-        state.value = Loading
-    }
-
-    if (isDisabled) {
-        state.value = Disabled
-    }
-
-    when (state.value) {
-        Default -> {
-            ButtonComponent(
-                text = text,
-                onClick = {
-                    onClick
-                },
-                buttonStyles = buttonStyles,
-                state = state
-            )
+    LaunchedEffect(isLoading, isDisabled) {
+        state = when {
+            isLoading -> Loading
+            isDisabled -> Disabled
+            else -> Default
         }
-        Loading -> {
-            ButtonComponent(
-                text = text,
-                onClick = {
-                    onClick
-                },
-                buttonStyles = buttonStyles,
-                state = state
-            )
-        }
-
-
-        else -> {}
     }
+    ButtonComponent(
+        text = text,
+        onClick = {
+            if (!isLoading && !isDisabled) {
+                onClick()
+            }
+        },
+        buttonStyles = buttonStyles,
+        state = state
+    )
 
 
 }

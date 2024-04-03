@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,12 +25,6 @@ import es.rudo.components.button.IconType
 import es.rudo.democomponents.ui.theme.DarkBlue
 import es.rudo.democomponents.ui.theme.Pink
 import es.rudo.democomponents.ui.theme.White
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import java.util.TimerTask
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -138,37 +129,34 @@ fun TestingButtons() {
             customHeight = 50.dp
         )
 
-    data class ButtonTestUiStates(
-        val isLoading: Boolean = false,
-    )
-
-    val uiState: MutableStateFlow<ButtonTestUiStates> =
-        MutableStateFlow(ButtonTestUiStates())
-    val testUiState: StateFlow<ButtonTestUiStates> = uiState.asStateFlow()
-
-    fun setIsLoading(isLoading: Boolean) {
-        uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    val testUiStateCollect by testUiState.collectAsState()
-    val isLoading = testUiStateCollect.isLoading
+    val isLoading = remember { mutableStateOf(false) }
+    val isDisabled = remember { mutableStateOf(false) }
 
     Column {
         Button(
-            onClick = { setIsLoading(true) },
+            onClick = { isLoading.value = true },
         ) {
             Text(text = "setLoading")
         }
         Button(
-            onClick = { setIsLoading(false)  },
+            onClick = {
+                isLoading.value = false
+                isDisabled.value = false
+            },
         ) {
             Text(text = "setDefault")
+        }
+        Button(
+            onClick = { isDisabled.value = true },
+        ) {
+            Text(text = "setDisabled")
         }
 
         CustomButton(
             onClick = {},
             buttonStyles = standardStyleNoBorderSmall,
-            isLoading = isLoading
+            isLoading = isLoading.value,
+            isDisabled = isDisabled.value
         )
 
         Spacer(modifier = Modifier.height(10.dp))
